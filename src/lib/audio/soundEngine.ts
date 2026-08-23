@@ -12,8 +12,8 @@ class BookSoundEngine {
     if (this.ready || this.initPromise || typeof window === "undefined") return;
     this.initPromise = generateSoundSet()
       .then(({ turn, cover }) => {
-        this.turnHowls = turn.map((src) => new Howl({ src: [src], format: ["wav"], volume: 0.55 }));
-        this.coverHowls = cover.map((src) => new Howl({ src: [src], format: ["wav"], volume: 0.7 }));
+        this.turnHowls = turn.map((src) => new Howl({ src: [src], format: ["wav"], volume: 0.4 }));
+        this.coverHowls = cover.map((src) => new Howl({ src: [src], format: ["wav"], volume: 0.45 }));
         this.ready = true;
       })
       .catch(() => {
@@ -31,7 +31,7 @@ class BookSoundEngine {
     const howl = this.turnHowls[Math.floor(Math.random() * this.turnHowls.length)];
     const id = howl.play();
     howl.rate(0.85 + Math.random() * 0.3 + speed * 0.15, id);
-    howl.volume(Math.min(1, 0.35 + speed * 0.5), id);
+    howl.volume(Math.min(0.55, 0.16 + speed * 0.3), id);
   }
 
   playCoverThud() {

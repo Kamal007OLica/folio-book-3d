@@ -28,28 +28,30 @@ function hann(t: number, center: number, width: number): number {
  * down — not one smooth decay. This shapes overall amplitude that way.
  */
 function pageEnvelope(t: number, duration: number): number {
-  const lift = hann(t, duration * 0.1, duration * 0.32) * 1.0;
-  const settle = hann(t, duration * 0.82, duration * 0.34) * 0.85;
-  const glideIn = Math.min(1, t / (duration * 0.05));
-  const glideOut = Math.min(1, (duration - t) / (duration * 0.12));
-  const glide = 0.22 * glideIn * glideOut;
+  const lift = hann(t, duration * 0.1, duration * 0.34) * 0.85;
+  const settle = hann(t, duration * 0.82, duration * 0.36) * 0.7;
+  const glideIn = Math.min(1, t / (duration * 0.1));
+  const glideOut = Math.min(1, (duration - t) / (duration * 0.16));
+  const glide = 0.16 * glideIn * glideOut;
   return Math.max(lift, settle, glide);
 }
 
 /** Sparse crackle transients, clustered near the lift and settle phases (not spread uniformly). */
 function addCrackle(data: Float32Array, duration: number, rand: () => number) {
   const length = data.length;
-  const spikeCount = 16 + Math.floor(Math.abs(rand()) * 14);
+  // Fewer, softer, longer-decaying spikes read as gentle paper crinkle;
+  // too many sharp ones read as digital static.
+  const spikeCount = 9 + Math.floor(Math.abs(rand()) * 8);
   for (let k = 0; k < spikeCount; k++) {
     // bias spike positions toward the two active phases via a bimodal pick
     const phase = rand() < 0 ? 0.1 : 0.82;
     const spread = 0.28;
     const tPos = Math.max(0, Math.min(1, phase + rand() * spread));
     const pos = Math.floor(tPos * (length - 60));
-    const spikeLen = 5 + Math.floor(Math.abs(rand()) * 18);
-    const spikeAmp = 0.35 + Math.abs(rand()) * 0.55;
+    const spikeLen = 8 + Math.floor(Math.abs(rand()) * 22);
+    const spikeAmp = 0.16 + Math.abs(rand()) * 0.28;
     for (let j = 0; j < spikeLen && pos + j < length; j++) {
-      data[pos + j] += rand() * spikeAmp * Math.exp(-j / (spikeLen * 0.35));
+      data[pos + j] += rand() * spikeAmp * Math.exp(-j / (spikeLen * 0.55));
     }
   }
 }
@@ -118,19 +120,21 @@ async function synthPageTurn(seed: number, longer = false): Promise<Float32Array
   // Bandpass sweep: starts duller (paper lifting off the stack), brightens
   // through the middle of the turn, settles duller again as it flops flat —
   // this is the "whoosh" that makes it read as air/paper motion, not static.
+  // Peak frequency kept modest (was 4200Hz) — anything brighter reads as a
+  // harsh digital hiss rather than soft paper.
   const filtered = await applyFilterSweep(raw, {
     type: "bandpass",
-    q: 0.65,
+    q: 0.55,
     freqPoints: [
-      { time: 0, value: 1400 },
-      { time: duration * 0.35, value: 4200 },
-      { time: duration * 0.7, value: 2600 },
-      { time: duration, value: 1200 },
+      { time: 0, value: 1200 },
+      { time: duration * 0.35, value: 3000 },
+      { time: duration * 0.7, value: 2000 },
+      { time: duration, value: 1000 },
     ],
-    highpassFreq: 500,
+    highpassFreq: 450,
   });
 
-  normalize(filtered, 0.88);
+  normalize(filtered, 0.5);
   return filtered;
 }
 
@@ -169,10 +173,10 @@ async function synthCoverThud(seed: number): Promise<Float32Array> {
 
   const out = new Float32Array(length);
   for (let i = 0; i < length; i++) {
-    out[i] = body[i] + (tail[i] ?? 0) * 0.3;
+    out[i] = body[i] + (tail[i] ?? 0) * 0.25;
   }
 
-  normalize(out, 0.92);
+  normalize(out, 0.55);
   return out;
 }
 
