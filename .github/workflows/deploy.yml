@@ -26,6 +26,12 @@ jobs:
           node-version: 22
           cache: npm
 
+      # enablement: true turns Pages on for the repo on first run, so there's
+      # no manual visit to Settings → Pages before the first deploy works.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
       - run: npm ci
 
       - name: Build static export
