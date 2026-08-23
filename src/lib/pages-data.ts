@@ -1,3 +1,5 @@
+import { asset } from "./basePath";
+
 // Interior page textures were exported from the source PDF as
 // public/textures/pages/001.jpg .. 078.jpg (one image per printed page).
 // 001-005 are front matter (colophon + two blanks + contents spread),
@@ -12,14 +14,14 @@ export interface LeafData {
 }
 
 const pad = (n: number) => String(n).padStart(3, "0");
-const pagePath = (n: number) => `/textures/pages/${pad(n)}.jpg`;
+const pagePath = (n: number) => asset(`/textures/pages/${pad(n)}.jpg`);
 
 export const LEAVES: LeafData[] = (() => {
   const leaves: LeafData[] = [];
   for (let i = 1; i <= INTERIOR_PAGE_IMAGE_COUNT; i += 2) {
     leaves.push({
       front: pagePath(i),
-      back: i + 1 <= INTERIOR_PAGE_IMAGE_COUNT ? pagePath(i + 1) : "/textures/paper-blank.jpg",
+      back: i + 1 <= INTERIOR_PAGE_IMAGE_COUNT ? pagePath(i + 1) : asset("/textures/paper-blank.jpg"),
     });
   }
   return leaves;
@@ -30,11 +32,11 @@ export const LEAVES: LeafData[] = (() => {
 // animation as the interior pages.
 export const PAGE_COUNT = LEAVES.length + 2;
 
-export const COVER_FRONT = "/textures/cover-front.jpg";
-export const COVER_BACK = "/textures/cover-back.jpg";
-export const SPINE_TEXTURE = "/textures/spine.png";
+export const COVER_FRONT = asset("/textures/cover-front.jpg");
+export const COVER_BACK = asset("/textures/cover-back.jpg");
+export const SPINE_TEXTURE = asset("/textures/spine.png");
 export const PAPER_EDGE_COLOR = "#e7dcc8";
-const BLANK_PAGE = "/textures/paper-blank.jpg";
+const BLANK_PAGE = asset("/textures/paper-blank.jpg");
 
 export interface LeafFaces {
   front: string;
