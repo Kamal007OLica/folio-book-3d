@@ -4,7 +4,7 @@ An interactive 3D hardcover portfolio. The book rests in a lit room, opens on
 click, and its pages bend and turn with drag physics and procedurally
 synthesized paper audio.
 
-**Live site:** https://<username>.github.io/folio-book-3d/
+**Live site:** https://kamal007olica.github.io/folio-book-3d/
 
 ## Stack
 
