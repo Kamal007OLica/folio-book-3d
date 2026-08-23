@@ -26,11 +26,10 @@ jobs:
           node-version: 22
           cache: npm
 
-      # enablement: true turns Pages on for the repo on first run, so there's
-      # no manual visit to Settings → Pages before the first deploy works.
+      # Pages itself is enabled out-of-band (Settings → Pages → Source:
+      # GitHub Actions). Creating the Pages site needs admin rights that the
+      # Actions token doesn't have, so `enablement: true` cannot work here.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - run: npm ci
 
