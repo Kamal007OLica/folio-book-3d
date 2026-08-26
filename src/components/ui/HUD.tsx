@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useBookStore, TOTAL_STOPS } from "@/store/useBookStore";
 import { soundEngine } from "@/lib/audio/soundEngine";
+import { SocialLinks } from "./SocialLinks";
 
 function ChevronLeft() {
   return (
@@ -98,8 +99,13 @@ export function HUD() {
     <div className="pointer-events-none fixed inset-0 flex flex-col justify-between p-6 sm:p-8">
       {/* top bar */}
       <div className="flex items-start justify-between">
-        <div className="font-mono-tech text-[11px] uppercase tracking-[0.25em] text-paper/60">
-          Folio · Volume I
+        {/* Left cluster reads as a printed colophon: label, hairline, contacts. */}
+        <div className="flex flex-col items-start gap-3">
+          <div className="font-mono-tech text-[11px] uppercase tracking-[0.25em] text-paper/60">
+            Folio · Volume I
+          </div>
+          <div className="h-px w-full min-w-[124px] bg-[var(--hud-border)]" />
+          <SocialLinks />
         </div>
         <div className="flex items-center gap-3">
           <button

@@ -22,12 +22,21 @@
   --hud-border: rgba(36, 28, 20, 0.18);
 }
 
-@theme inline {
+/* Colors deliberately use `@theme` and NOT `@theme inline`: the inline form
+   substitutes each token's resolved value into every utility at build time,
+   which freezes `text-paper` etc. at the dark palette and makes the
+   [data-theme="light"] overrides above dead code. Plain `@theme` emits
+   var() indirection, so the utilities re-resolve per theme at runtime. */
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-ember: var(--ember);
   --color-ember-soft: var(--ember-soft);
   --color-paper: var(--paper);
+}
+
+/* Fonts are theme-independent, so inlining them is fine. */
+@theme inline {
   --font-sans: var(--font-jakarta);
   --font-mono: var(--font-jetbrains);
 }
