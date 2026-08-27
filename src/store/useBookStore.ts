@@ -35,7 +35,7 @@ export const useBookStore = create<BookState>((set, get) => ({
   hovered: null,
   soundEnabled: true,
   hasInteracted: false,
-  theme: "dark",
+  theme: "light",
   setPage: (page) => {
     const prev = get().page;
     const clamped = Math.max(0, Math.min(TOTAL_STOPS, page));
@@ -62,7 +62,12 @@ export const useBookStore = create<BookState>((set, get) => ({
     set({ theme });
     if (typeof window !== "undefined") {
       document.documentElement.dataset.theme = theme;
-      window.localStorage.setItem("folio-theme", theme);
+      try {
+        window.localStorage.setItem("folio-theme", theme);
+      } catch {
+        // Private mode / blocked storage: the toggle should still work for
+        // this session even if the choice can't be persisted.
+      }
     }
   },
   toggleTheme: () => get().setTheme(get().theme === "dark" ? "light" : "dark"),

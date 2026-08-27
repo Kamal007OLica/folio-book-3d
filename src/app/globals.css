@@ -1,17 +1,10 @@
 @import "tailwindcss";
 
+/* Light is the default theme, so it lives on bare :root — the page renders
+   light even in the edge case where no data-theme attribute is present.
+   Dark is the opt-in override, applied only when explicitly selected. */
 :root {
-  --background: #0b0906;
-  --foreground: #f4ede4;
-  --ember: #e2461f;
-  --ember-soft: #f2743f;
-  --paper: #f4ede4;
-  --paper-dim: #cabfae;
-  --hud-surface: rgba(0, 0, 0, 0.2);
-  --hud-border: rgba(255, 255, 255, 0.15);
-}
-
-:root[data-theme="light"] {
+  color-scheme: light;
   --background: #ede4d6;
   --foreground: #241c14;
   --ember: #d43f1a;
@@ -22,11 +15,23 @@
   --hud-border: rgba(36, 28, 20, 0.18);
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0b0906;
+  --foreground: #f4ede4;
+  --ember: #e2461f;
+  --ember-soft: #f2743f;
+  --paper: #f4ede4;
+  --paper-dim: #cabfae;
+  --hud-surface: rgba(0, 0, 0, 0.2);
+  --hud-border: rgba(255, 255, 255, 0.15);
+}
+
 /* Colors deliberately use `@theme` and NOT `@theme inline`: the inline form
    substitutes each token's resolved value into every utility at build time,
-   which freezes `text-paper` etc. at the dark palette and makes the
-   [data-theme="light"] overrides above dead code. Plain `@theme` emits
-   var() indirection, so the utilities re-resolve per theme at runtime. */
+   which would freeze `text-paper` etc. at the default palette and make the
+   [data-theme] overrides above dead code. Plain `@theme` emits var()
+   indirection, so the utilities re-resolve per theme at runtime. */
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

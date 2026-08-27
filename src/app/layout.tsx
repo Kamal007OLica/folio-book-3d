@@ -23,14 +23,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      data-theme="dark"
+      data-theme="light"
       suppressHydrationWarning
       className={`${jakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
+        {/* Applies a previously chosen theme before first paint, so returning
+            visitors never see a flash of the default. Deliberately does NOT
+            consult prefers-color-scheme: light is the intended first
+            impression regardless of OS setting, and only an explicit toggle
+            (persisted here) overrides it. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("folio-theme");if(t)document.documentElement.setAttribute("data-theme",t);else if(matchMedia("(prefers-color-scheme: light)").matches)document.documentElement.setAttribute("data-theme","light")}catch(e){}})()`,
+            __html: `(function(){try{var t=localStorage.getItem("folio-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`,
           }}
         />
       </head>

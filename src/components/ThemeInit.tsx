@@ -3,22 +3,31 @@
 import { useEffect } from "react";
 import { useBookStore } from "@/store/useBookStore";
 
-/** Applies the persisted (or OS-preferred) theme once on mount, client-only
- * to avoid an SSR/hydration mismatch — the server always renders "dark". */
+/**
+ * Syncs the zustand store with a previously chosen theme.
+ *
+ * The inline script in the root layout has already stamped `data-theme` on
+ * <html> before paint, so the CSS is correct from the first frame; this only
+ * catches the store up (the 3D scene reads its palette from there). Runs in
+ * an effect rather than at store-init so SSR and the first client render
+ * agree on the default and hydration stays clean.
+ *
+ * Light is the default and needs no action — only a stored preference is
+ * applied. OS `prefers-color-scheme` is intentionally ignored.
+ */
 export function ThemeInit() {
   const setTheme = useBookStore((s) => s.setTheme);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem("folio-theme");
-    if (stored === "light" || stored === "dark") {
-      setTheme(stored);
-    } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-      setTheme("light");
-    } else {
-      document.documentElement.dataset.theme = "dark";
+    let stored: string | null = null;
+    try {
+      stored = window.localStorage.getItem("folio-theme");
+    } catch {
+      // localStorage can throw in private mode / blocked-cookie contexts.
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (stored === "dark" || stored === "light") setTheme(stored);
+  }, [setTheme]);
 
   return null;
 }

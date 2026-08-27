@@ -32,7 +32,7 @@ export function LoadingOverlay() {
   if (dismissed) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-[#0b0906] transition-opacity duration-500">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-background transition-opacity duration-500">
       <div className="flex flex-col items-center gap-3">
         <div className="text-2xl font-semibold tracking-tight text-paper sm:text-3xl">
           Let&rsquo;s Talk &amp; Build.
@@ -42,7 +42,7 @@ export function LoadingOverlay() {
         </div>
       </div>
 
-      <div className="h-px w-40 overflow-hidden bg-white/10">
+      <div className="h-px w-40 overflow-hidden bg-[var(--hud-border)]">
         <div
           className="h-full bg-ember transition-[width] duration-200 ease-out"
           style={{ width: `${Math.min(100, progress)}%` }}
