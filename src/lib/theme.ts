@@ -10,3 +10,6 @@
  * Bump the suffix again if the default ever changes.
  */
 export const THEME_STORAGE_KEY = "folio-theme-v2";
+
+/** Key for saved bookmarks (an array of page indices). */
+export const BOOKMARKS_STORAGE_KEY = "folio-bookmarks-v1";

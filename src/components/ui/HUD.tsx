@@ -35,6 +35,36 @@ function SoundOffIcon() {
     </svg>
   );
 }
+function ContentsIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M4 6h16M4 12h16M4 18h10"
+        stroke="currentColor"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+function BookmarkIcon({ filled }: { filled?: boolean }) {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill={filled ? "currentColor" : "none"}
+      aria-hidden="true"
+    >
+      <path
+        d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4-6.5 4v-16a1 1 0 0 1 1-1z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 function SunIcon() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
@@ -75,6 +105,12 @@ export function HUD() {
   const toggleTheme = useBookStore((s) => s.toggleTheme);
   const hasInteracted = useBookStore((s) => s.hasInteracted);
   const markInteracted = useBookStore((s) => s.markInteracted);
+  const contentsOpen = useBookStore((s) => s.contentsOpen);
+  const toggleContents = useBookStore((s) => s.toggleContents);
+  const bookmarks = useBookStore((s) => s.bookmarks);
+  const toggleBookmark = useBookStore((s) => s.toggleBookmark);
+
+  const isBookmarked = bookmarks.includes(page);
 
   const [showHint, setShowHint] = useState(true);
 
@@ -137,7 +173,18 @@ export function HUD() {
       </div>
 
       {/* bottom bar */}
-      <div className="flex items-center justify-center gap-6">
+      <div className="flex items-center justify-center gap-3 sm:gap-5">
+        <button
+          onClick={toggleContents}
+          aria-label="Open contents"
+          aria-expanded={contentsOpen}
+          className={`${hudButton} ${hudButtonSurface} h-9 w-9 hover:border-ember/70 hover:text-ember-soft ${
+            contentsOpen ? "border-ember/70 text-ember-soft" : ""
+          }`}
+        >
+          <ContentsIcon />
+        </button>
+
         <button
           onClick={() => handleNav("prev")}
           disabled={page <= 0}
@@ -158,6 +205,17 @@ export function HUD() {
           className={`${hudButton} ${hudButtonSurface} h-11 w-11 enabled:hover:border-ember/70 enabled:hover:text-ember-soft disabled:opacity-25`}
         >
           <ChevronRight />
+        </button>
+
+        <button
+          onClick={() => toggleBookmark()}
+          aria-label={isBookmarked ? "Remove bookmark from this spread" : "Bookmark this spread"}
+          aria-pressed={isBookmarked}
+          className={`${hudButton} ${hudButtonSurface} h-9 w-9 hover:border-ember/70 hover:text-ember-soft ${
+            isBookmarked ? "border-ember/70 text-ember-soft" : ""
+          }`}
+        >
+          <BookmarkIcon filled={isBookmarked} />
         </button>
       </div>
     </div>

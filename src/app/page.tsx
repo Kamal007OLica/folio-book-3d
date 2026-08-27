@@ -3,7 +3,8 @@
 import dynamic from "next/dynamic";
 import { HUD } from "@/components/ui/HUD";
 import { LoadingOverlay } from "@/components/ui/LoadingOverlay";
-import { ThemeInit } from "@/components/ThemeInit";
+import { ContentsPanel } from "@/components/ui/ContentsPanel";
+import { PreferencesInit } from "@/components/PreferencesInit";
 
 const Experience = dynamic(
   () => import("@/components/three/Experience").then((mod) => mod.Experience),
@@ -13,9 +14,10 @@ const Experience = dynamic(
 export default function Home() {
   return (
     <main className="relative h-full w-full">
-      <ThemeInit />
+      <PreferencesInit />
       <Experience />
       <HUD />
+      <ContentsPanel />
       <LoadingOverlay />
     </main>
   );
