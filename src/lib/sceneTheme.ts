@@ -6,6 +6,9 @@ export interface SceneThemeColors {
   fogFar: number;
   ambientColor: string;
   ambientIntensity: number;
+  /** Bookmark ribbon. Picked to read against the page backdrop rather than
+   *  matching the cover, since the visible part pokes above the book. */
+  ribbon: string;
 }
 
 export const SCENE_THEMES: Record<"dark" | "light", SceneThemeColors> = {
@@ -17,6 +20,7 @@ export const SCENE_THEMES: Record<"dark" | "light", SceneThemeColors> = {
     fogFar: 16,
     ambientColor: "#ffe9d6",
     ambientIntensity: 0.55,
+    ribbon: "#ff7a4d",
   },
   light: {
     background: "#ded2bd",
@@ -26,5 +30,6 @@ export const SCENE_THEMES: Record<"dark" | "light", SceneThemeColors> = {
     fogFar: 18,
     ambientColor: "#fff6ea",
     ambientIntensity: 0.85,
+    ribbon: "#b5350f",
   },
 };

@@ -8,6 +8,7 @@ import { useBookStore } from "@/store/useBookStore";
 import { useBookDrag } from "@/hooks/useBookDrag";
 import { Page, FlatFiller } from "./Page";
 import { Spine } from "./Spine";
+import { BookmarkRibbons } from "./BookmarkRibbons";
 import { PAGE_HEIGHT, PAGE_THICKNESS, PAGE_WIDTH } from "./pageGeometry";
 
 const WINDOW = 2;
@@ -74,6 +75,7 @@ export function Book() {
     <group ref={groupRef} position={[0, PAGE_HEIGHT / 2, totalThickness / 2]}>
       <group ref={innerRef} position={[-PAGE_WIDTH / 2, 0, 0]}>
         <Spine totalThickness={totalThickness} page={page} />
+        <BookmarkRibbons page={page} />
         {leaves.map((leaf) => {
           const inWindow = leaf.index >= windowStart && leaf.index <= windowEnd;
           const isCoverLeaf = leaf.isCover;
