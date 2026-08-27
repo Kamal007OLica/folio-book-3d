@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useBookStore } from "@/store/useBookStore";
+import { THEME_STORAGE_KEY } from "@/lib/theme";
 
 /**
  * Syncs the zustand store with a previously chosen theme.
@@ -21,7 +22,7 @@ export function ThemeInit() {
   useEffect(() => {
     let stored: string | null = null;
     try {
-      stored = window.localStorage.getItem("folio-theme");
+      stored = window.localStorage.getItem(THEME_STORAGE_KEY);
     } catch {
       // localStorage can throw in private mode / blocked-cookie contexts.
       return;

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { PAGE_COUNT } from "@/lib/pages-data";
 import { soundEngine } from "@/lib/audio/soundEngine";
+import { THEME_STORAGE_KEY } from "@/lib/theme";
 
 // Page index model:
 // 0          -> book closed, front cover facing viewer
@@ -63,7 +64,7 @@ export const useBookStore = create<BookState>((set, get) => ({
     if (typeof window !== "undefined") {
       document.documentElement.dataset.theme = theme;
       try {
-        window.localStorage.setItem("folio-theme", theme);
+        window.localStorage.setItem(THEME_STORAGE_KEY, theme);
       } catch {
         // Private mode / blocked storage: the toggle should still work for
         // this session even if the choice can't be persisted.
