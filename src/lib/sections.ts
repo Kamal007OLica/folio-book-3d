@@ -116,7 +116,6 @@ export const CHAPTERS: Chapter[] = [
       { folio: 73, label: "Training · 244 workouts" },
       { folio: 74, label: "Reading habit · 100+ books" },
       { folio: 75, label: "Open source contributions" },
-      { folio: 77, label: "Closing note · with gratitude" },
     ],
   },
 ];
