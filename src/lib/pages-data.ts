@@ -33,6 +33,7 @@ export const LEAVES: LeafData[] = (() => {
 export const PAGE_COUNT = LEAVES.length + 2;
 
 export const COVER_FRONT = asset("/textures/cover-front.jpg");
+export const COVER_BACK = asset("/textures/cover-back.jpg");
 export const SPINE_TEXTURE = asset("/textures/spine.png");
 export const PAPER_EDGE_COLOR = "#e7dcc8";
 const BLANK_PAGE = asset("/textures/paper-blank.jpg");
@@ -49,7 +50,7 @@ export function getLeafFaces(leafIndex: number): LeafFaces {
     return { front: COVER_FRONT, back: BLANK_PAGE, isCover: true };
   }
   if (leafIndex === PAGE_COUNT - 1) {
-    return { front: BLANK_PAGE, back: BLANK_PAGE, isCover: true };
+    return { front: BLANK_PAGE, back: COVER_BACK, isCover: true };
   }
   const leaf = LEAVES[leafIndex - 1];
   return { front: leaf.front, back: leaf.back, isCover: false };
