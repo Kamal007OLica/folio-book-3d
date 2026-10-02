@@ -11,6 +11,7 @@ import {
   pageForFolio,
 } from "@/lib/sections";
 import { PAGE_COUNT } from "@/lib/pages-data";
+import { LIVE_LINKS } from "@/lib/links";
 
 function CloseIcon() {
   return (
@@ -33,6 +34,27 @@ function RibbonIcon({ filled }: { filled?: boolean }) {
         d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-4-6.5 4v-16a1 1 0 0 1 1-1z"
         stroke="currentColor"
         strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ExternalIcon() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M14 4h6v6M20 4l-8.5 8.5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M18 14.5V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3.5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
@@ -159,6 +181,45 @@ export function ContentsPanel() {
                 </button>
               ))}
             </div>
+          </section>
+
+          {/* Live work the printed pages can only show as stills. */}
+          <section className="mb-7">
+            <div className="font-mono-tech mb-3 text-[10px] uppercase tracking-[0.22em] text-paper/50">
+              Live links
+            </div>
+            <ul className="flex flex-col">
+              {LIVE_LINKS.map(({ href, label, note, folio }) => (
+                <li key={href} className="flex items-center gap-2">
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-1 items-baseline gap-3 rounded px-2 py-1.5 text-left text-[13px] text-paper/75 transition hover:bg-ember/10 hover:text-ember-soft"
+                  >
+                    <span className="font-mono-tech w-7 shrink-0 text-[10px] tracking-[0.12em] text-paper/45">
+                      <ExternalIcon />
+                    </span>
+                    <span className="flex-1">
+                      {label}
+                      <span className="text-paper/45"> — {note}</span>
+                    </span>
+                  </a>
+                  {folio !== undefined && (
+                    <button
+                      onClick={() => goTo(pageForFolio(folio))}
+                      aria-label={`Go to folio ${folio}, the spread covering ${label}`}
+                      title={`Folio ${String(folio).padStart(2, "0")} in the book`}
+                      className={`font-mono-tech shrink-0 rounded px-2 py-1 text-[10px] tracking-[0.15em] transition hover:text-ember-soft ${
+                        isCurrentEntry(folio) ? "text-ember-soft" : "text-paper/45"
+                      }`}
+                    >
+                      {String(folio).padStart(2, "0")}
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
           </section>
 
           {/* chapters, two columns on desktop like the printed spread */}
