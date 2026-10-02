@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useBookStore, TOTAL_STOPS } from "@/store/useBookStore";
 import { soundEngine } from "@/lib/audio/soundEngine";
 import { SocialLinks } from "./SocialLinks";
+import { LiveLinks } from "./LiveLinks";
 
 function ChevronLeft() {
   return (
@@ -172,51 +173,59 @@ export function HUD() {
         </p>
       </div>
 
-      {/* bottom bar */}
-      <div className="flex items-center justify-center gap-3 sm:gap-5">
-        <button
-          onClick={toggleContents}
-          aria-label="Open contents"
-          aria-expanded={contentsOpen}
-          className={`${hudButton} ${hudButtonSurface} h-9 w-9 hover:border-ember/70 hover:text-ember-soft ${
-            contentsOpen ? "border-ember/70 text-ember-soft" : ""
-          }`}
-        >
-          <ContentsIcon />
-        </button>
-
-        <button
-          onClick={() => handleNav("prev")}
-          disabled={page <= 0}
-          aria-label="Previous page"
-          className={`${hudButton} ${hudButtonSurface} h-11 w-11 enabled:hover:border-ember/70 enabled:hover:text-ember-soft disabled:opacity-25`}
-        >
-          <ChevronLeft />
-        </button>
-
-        <div className="font-mono-tech min-w-[86px] text-center text-xs tracking-[0.15em] text-paper/70">
-          {String(page).padStart(2, "0")} / {String(TOTAL_STOPS).padStart(2, "0")}
+      {/* bottom bar — the links take the corner opposite the colophon on
+          desktop, and stack above the controls where there is no room
+          beside them. The controls stay centred on the viewport either way. */}
+      <div className="flex flex-col items-center gap-5 md:relative md:gap-0">
+        <div className="pointer-events-none md:absolute md:bottom-0 md:left-0">
+          <LiveLinks />
         </div>
 
-        <button
-          onClick={() => handleNav("next")}
-          disabled={page >= TOTAL_STOPS}
-          aria-label="Next page"
-          className={`${hudButton} ${hudButtonSurface} h-11 w-11 enabled:hover:border-ember/70 enabled:hover:text-ember-soft disabled:opacity-25`}
-        >
-          <ChevronRight />
-        </button>
+        <div className="flex items-center justify-center gap-3 sm:gap-5">
+          <button
+            onClick={toggleContents}
+            aria-label="Open contents"
+            aria-expanded={contentsOpen}
+            className={`${hudButton} ${hudButtonSurface} h-9 w-9 hover:border-ember/70 hover:text-ember-soft ${
+              contentsOpen ? "border-ember/70 text-ember-soft" : ""
+            }`}
+          >
+            <ContentsIcon />
+          </button>
 
-        <button
-          onClick={() => toggleBookmark()}
-          aria-label={isBookmarked ? "Remove bookmark from this spread" : "Bookmark this spread"}
-          aria-pressed={isBookmarked}
-          className={`${hudButton} ${hudButtonSurface} h-9 w-9 hover:border-ember/70 hover:text-ember-soft ${
-            isBookmarked ? "border-ember/70 text-ember-soft" : ""
-          }`}
-        >
-          <BookmarkIcon filled={isBookmarked} />
-        </button>
+          <button
+            onClick={() => handleNav("prev")}
+            disabled={page <= 0}
+            aria-label="Previous page"
+            className={`${hudButton} ${hudButtonSurface} h-11 w-11 enabled:hover:border-ember/70 enabled:hover:text-ember-soft disabled:opacity-25`}
+          >
+            <ChevronLeft />
+          </button>
+
+          <div className="font-mono-tech min-w-[86px] text-center text-xs tracking-[0.15em] text-paper/70">
+            {String(page).padStart(2, "0")} / {String(TOTAL_STOPS).padStart(2, "0")}
+          </div>
+
+          <button
+            onClick={() => handleNav("next")}
+            disabled={page >= TOTAL_STOPS}
+            aria-label="Next page"
+            className={`${hudButton} ${hudButtonSurface} h-11 w-11 enabled:hover:border-ember/70 enabled:hover:text-ember-soft disabled:opacity-25`}
+          >
+            <ChevronRight />
+          </button>
+
+          <button
+            onClick={() => toggleBookmark()}
+            aria-label={isBookmarked ? "Remove bookmark from this spread" : "Bookmark this spread"}
+            aria-pressed={isBookmarked}
+            className={`${hudButton} ${hudButtonSurface} h-9 w-9 hover:border-ember/70 hover:text-ember-soft ${
+              isBookmarked ? "border-ember/70 text-ember-soft" : ""
+            }`}
+          >
+            <BookmarkIcon filled={isBookmarked} />
+          </button>
+        </div>
       </div>
     </div>
   );
