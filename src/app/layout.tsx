@@ -15,9 +15,44 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
+/**
+ * Canonical public address of the book. Open Graph and Twitter crawlers do
+ * not resolve relative URLs, so `metadataBase` gives Next an absolute origin
+ * (including the GitHub Pages project subpath) to resolve `og.jpg` against.
+ * Hardcoded rather than derived from NEXT_PUBLIC_BASE_PATH because the card
+ * must point at the deployed book even when built locally or on a root host.
+ */
+const SITE_URL = "https://kamal007olica.github.io/folio-book-3d/";
+
+const TITLE = "Kamalraaj's Folio, Volume I";
+const DESCRIPTION = "An interactive hardcover portfolio. Let's talk & build.";
+
 export const metadata: Metadata = {
-  title: "Folio — Kamalraaj Senthilkumar",
-  description: "An interactive hardcover portfolio. Let's talk & build.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: TITLE,
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [
+      {
+        url: "og.jpg",
+        type: "image/jpeg",
+        width: 1200,
+        height: 630,
+        alt: "A hardcover folio resting in a lit room, waiting to be opened.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["og.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
