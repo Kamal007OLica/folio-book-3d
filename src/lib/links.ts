@@ -14,9 +14,9 @@ export interface LiveLink {
 
 export const LIVE_LINKS: LiveLink[] = [
   {
-    href: "https://kamal007olica.github.io/email-assets./build365/",
+    href: "https://kamal007olica.github.io/Build365-site/",
     label: "Build365",
-    note: "Build365 — campaign microsite",
+    note: "Build365 — the tool built to build ZenMode OS",
   },
   {
     href: "https://zenmodeos.com/story/index.html",
